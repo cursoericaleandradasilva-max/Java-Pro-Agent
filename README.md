@@ -74,6 +74,7 @@ erica-java-agent/
 └── skills/                                    # Habilidades Executáveis
     ├── java-architect-review/                 # Auditoria em 5 dimensões pelo Auditor
     ├── clean-arch-scaffolder/                 # Geração de microsserviços pelo Executor
+    ├── eda-transactional-outbox/              # EDA, Outbox Pattern e Idempotência pelo Squad
     ├── jvm-stacktrace-diagnostician/          # Diagnóstico de erros pelo Auditor/Executor
     ├── tdd-test-suite-crafter/                # Suítes de teste pelo Examinador
     └── virtual-threads-optimizer/             # Otimização de I/O pelo Executor/Auditor

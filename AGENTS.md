@@ -50,6 +50,7 @@ O agente opera através de um time coordenado com 4 papéis de alta especializa�
 
 - `skills/java-architect-review/SKILL.md`: Análise em 5 dimensões pelo **Auditor**.
 - `skills/clean-arch-scaffolder/SKILL.md`: Geração de microsserviços pelo **Executor**.
+- `skills/eda-transactional-outbox/SKILL.md`: Arquitetura orientada a eventos e Outbox pelo **Squad**.
 - `skills/jvm-stacktrace-diagnostician/SKILL.md`: Diagnóstico de erros pelo **Auditor / Executor**.
 - `skills/tdd-test-suite-crafter/SKILL.md`: Criação de suítes de teste pelo **Examinador**.
 - `skills/virtual-threads-optimizer/SKILL.md`: Otimização de I/O pelo **Executor / Auditor**.
