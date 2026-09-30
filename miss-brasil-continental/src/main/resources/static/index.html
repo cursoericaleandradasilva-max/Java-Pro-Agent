@@ -122,9 +122,13 @@
 
                 <!-- Grupo 3: Endereço -->
                 <div class="form-group-title">
-                    <h4>3. Localização & Endereço</h4>
+                    <h4>3. Localização & Endereço <small style="font-size: 0.75rem; color: var(--gold-primary); font-family: 'Montserrat', sans-serif;">(⚡ Preenchimento automático via CEP)</small></h4>
                 </div>
                 <div class="form-row">
+                    <div class="form-col">
+                        <label for="cep">CEP * <span id="cepStatus" style="font-size: 0.75rem; color: var(--gold-light);"></span></label>
+                        <input type="text" id="cep" required placeholder="00000-000" maxlength="9">
+                    </div>
                     <div class="form-col wide">
                         <label for="logradouro">Logradouro / Rua *</label>
                         <input type="text" id="logradouro" required placeholder="Ex: Av. Paulista">
@@ -147,10 +151,6 @@
                     <div class="form-col narrow">
                         <label for="estado">UF (Estado) *</label>
                         <input type="text" id="estado" maxlength="2" required placeholder="SP" style="text-transform: uppercase;">
-                    </div>
-                    <div class="form-col">
-                        <label for="cep">CEP</label>
-                        <input type="text" id="cep" placeholder="01310-100">
                     </div>
                 </div>
 

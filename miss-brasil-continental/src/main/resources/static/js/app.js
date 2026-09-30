@@ -1,11 +1,102 @@
-// JavaScript de Inscrição Oficial - Miss Brasil Continental
+// JavaScript de Inscrição Oficial com Integração ViaCEP - Miss Brasil Continental
 let fotosBase64 = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     configurarUploadFotos();
     configurarFormInscricao();
     configurarConsultaProtocolo();
+    configurarApiCep();
+    configurarMascaras();
 });
+
+// Integração Segura com a API Gratuita ViaCEP
+function configurarApiCep() {
+    const inputCep = document.getElementById('cep');
+    const cepStatus = document.getElementById('cepStatus');
+    const inputLogradouro = document.getElementById('logradouro');
+    const inputBairro = document.getElementById('bairro');
+    const inputCidade = document.getElementById('cidade');
+    const inputEstado = document.getElementById('estado');
+    const inputNumero = document.getElementById('numero');
+
+    inputCep.addEventListener('input', (e) => {
+        let valor = e.target.value.replace(/\D/g, '');
+        if (valor.length > 8) valor = valor.substring(0, 8);
+        
+        // Aplica máscara 00000-000
+        if (valor.length > 5) {
+            e.target.value = valor.substring(0, 5) + '-' + valor.substring(5);
+        } else {
+            e.target.value = valor;
+        }
+
+        if (valor.length === 8) {
+            buscarEnderecoViaCep(valor);
+        }
+    });
+
+    inputCep.addEventListener('blur', (e) => {
+        const valor = e.target.value.replace(/\D/g, '');
+        if (valor.length === 8) {
+            buscarEnderecoViaCep(valor);
+        }
+    });
+
+    async function buscarEnderecoViaCep(cepNumeros) {
+        cepStatus.textContent = '⏳ Buscando endereço...';
+        cepStatus.style.color = 'var(--gold-light)';
+
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${cepNumeros}/json/`);
+            if (!response.ok) throw new Error('Falha na consulta do CEP');
+
+            const data = await response.json();
+            if (data.erro) {
+                cepStatus.textContent = '❌ CEP não encontrado';
+                cepStatus.style.color = 'var(--danger)';
+                return;
+            }
+
+            // Preenchimento automático dos campos
+            if (data.logradouro) inputLogradouro.value = data.logradouro;
+            if (data.bairro) inputBairro.value = data.bairro;
+            if (data.localidade) inputCidade.value = data.localidade;
+            if (data.uf) inputEstado.value = data.uf.toUpperCase();
+
+            cepStatus.textContent = '✅ Endereço preenchido!';
+            cepStatus.style.color = '#34d399';
+
+            // Foco imediato no campo de número
+            inputNumero.focus();
+
+        } catch (error) {
+            console.error('Erro ViaCEP:', error);
+            cepStatus.textContent = '⚠️ Erro ao consultar CEP';
+            cepStatus.style.color = 'var(--warning)';
+        }
+    }
+}
+
+// Máscaras de entrada (WhatsApp)
+function configurarMascaras() {
+    const inputWhatsapp = document.getElementById('whatsapp');
+    inputWhatsapp.addEventListener('input', (e) => {
+        let valor = e.target.value.replace(/\D/g, '');
+        if (valor.length > 11) valor = valor.substring(0, 11);
+
+        if (valor.length > 10) {
+            e.target.value = `(${valor.substring(0, 2)}) ${valor.substring(2, 7)}-${valor.substring(7)}`;
+        } else if (valor.length > 6) {
+            e.target.value = `(${valor.substring(0, 2)}) ${valor.substring(2, 6)}-${valor.substring(6)}`;
+        } else if (valor.length > 2) {
+            e.target.value = `(${valor.substring(0, 2)}) ${valor.substring(2)}`;
+        } else if (valor.length > 0) {
+            e.target.value = `(${valor}`;
+        } else {
+            e.target.value = '';
+        }
+    });
+}
 
 // Manipulação e conversão de fotos para Base64 seguro
 function configurarUploadFotos() {
@@ -123,6 +214,7 @@ function configurarFormInscricao() {
             const data = await response.json();
             form.reset();
             fotosBase64 = [];
+            document.getElementById('cepStatus').textContent = '';
             renderizarPreviews();
 
             // Abre modal com protocolo gerado

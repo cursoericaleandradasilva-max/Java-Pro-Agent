@@ -22,14 +22,50 @@
                 </div>
             </div>
             <div class="admin-user-info">
-                <span id="authStatus" class="auth-pill">🔒 Autenticado: Admin</span>
-                <a href="index.html" class="btn-nav outline">← Voltar ao Portal Público</a>
+                <span id="authStatus" class="auth-pill" style="display: none;">🔒 Autenticado: <strong id="adminUsername">Admin</strong></span>
+                <button id="btnLogout" class="btn-logout" style="display: none;" onclick="fazerLogout()">🚪 Sair</button>
+                <a href="index.html" class="btn-nav outline">← Portal Público</a>
             </div>
         </div>
     </header>
 
-    <!-- Container Principal do Dashboard -->
-    <main class="container admin-main">
+    <!-- Tela de Login Obrigatória (Gatekeeper) -->
+    <section id="loginSection" class="login-gatekeeper-section">
+        <div class="container login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <span class="lock-icon">🔒</span>
+                    <h3>Acesso Restrito à Comissão</h3>
+                    <p>Área restrita exclusivamente para jurados e administradores oficiais do Miss Brasil Continental.</p>
+                </div>
+
+                <form id="formLoginAdmin" class="login-form">
+                    <div id="loginAlert" class="alert-box error" style="display: none;"></div>
+
+                    <div class="form-col full">
+                        <label for="adminUser">Usuário do Administrador</label>
+                        <input type="text" id="adminUser" required placeholder="Digite seu usuário..." autocomplete="username">
+                    </div>
+
+                    <div class="form-col full">
+                        <label for="adminPass">Senha de Acesso</label>
+                        <input type="password" id="adminPass" required placeholder="••••••••••••" autocomplete="current-password">
+                    </div>
+
+                    <button type="submit" id="btnLogin" class="btn-submit btn-login">
+                        <span class="btn-text">Entrar no Painel Seguro</span>
+                    </button>
+                </form>
+
+                <div class="login-footer-info">
+                    <span>🛡️ Autenticação Criptografada & Proteção LGPD</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Container Principal do Dashboard (Oculto até autenticar) -->
+    <main id="adminDashboard" class="container admin-main" style="display: none;">
         <!-- Métricas e Contadores (KPIs) -->
         <section class="kpi-grid">
             <div class="kpi-card" data-filter="" onclick="filtrarStatus('')">

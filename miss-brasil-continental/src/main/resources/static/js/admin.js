@@ -1,11 +1,132 @@
-// JavaScript do Painel Administrativo Oficial - Miss Brasil Continental
-const ADMIN_AUTH = 'Basic ' + btoa('admin:miss2026admin');
+// JavaScript do Painel Administrativo Oficial com Autenticação Gatekeeper - Miss Brasil Continental
 let candidatasLista = [];
 let candidataSelecionadaId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    carregarTudo();
+    configurarFormLogin();
+    verificarSessao();
 });
+
+function obterAuthHeader() {
+    return sessionStorage.getItem('mbc_admin_auth');
+}
+
+function salvarAuthHeader(user, pass) {
+    const token = 'Basic ' + btoa(`${user}:${pass}`);
+    sessionStorage.setItem('mbc_admin_auth', token);
+    sessionStorage.setItem('mbc_admin_user', user);
+}
+
+function limparSessao() {
+    sessionStorage.removeItem('mbc_admin_auth');
+    sessionStorage.removeItem('mbc_admin_user');
+}
+
+async function verificarSessao() {
+    const authHeader = obterAuthHeader();
+    const loginSection = document.getElementById('loginSection');
+    const adminDashboard = document.getElementById('adminDashboard');
+    const authStatus = document.getElementById('authStatus');
+    const btnLogout = document.getElementById('btnLogout');
+    const adminUsername = document.getElementById('adminUsername');
+
+    if (!authHeader) {
+        exibirTelaLogin();
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/v1/admin/candidatas/auth/check', {
+            headers: { 'Authorization': authHeader }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            loginSection.style.display = 'none';
+            adminDashboard.style.display = 'block';
+            authStatus.style.display = 'inline-block';
+            btnLogout.style.display = 'inline-block';
+            adminUsername.textContent = data.username || 'Admin';
+
+            carregarTudo();
+        } else {
+            limparSessao();
+            exibirTelaLogin();
+        }
+    } catch (error) {
+        limparSessao();
+        exibirTelaLogin();
+    }
+}
+
+function exibirTelaLogin() {
+    document.getElementById('loginSection').style.display = 'block';
+    document.getElementById('adminDashboard').style.display = 'none';
+    document.getElementById('authStatus').style.display = 'none';
+    document.getElementById('btnLogout').style.display = 'none';
+}
+
+function configurarFormLogin() {
+    const form = document.getElementById('formLoginAdmin');
+    const alertBox = document.getElementById('loginAlert');
+    const btnLogin = document.getElementById('btnLogin');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const user = document.getElementById('adminUser').value.trim();
+        const pass = document.getElementById('adminPass').value;
+
+        if (!user || !pass) {
+            alertBox.textContent = 'Por favor, preencha o usuário e a senha.';
+            alertBox.style.display = 'block';
+            return;
+        }
+
+        const token = 'Basic ' + btoa(`${user}:${pass}`);
+        btnLogin.disabled = true;
+        btnLogin.querySelector('.btn-text').textContent = 'Autenticando...';
+        alertBox.style.display = 'none';
+
+        try {
+            const response = await fetch('/api/v1/admin/candidatas/auth/check', {
+                headers: { 'Authorization': token }
+            });
+
+            if (!response.ok) {
+                throw new Error('Usuário ou senha incorretos. Acesso negado.');
+            }
+
+            const data = await response.json();
+            salvarAuthHeader(user, pass);
+            form.reset();
+
+            // Mostra dashboard
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'block';
+            document.getElementById('authStatus').style.display = 'inline-block';
+            document.getElementById('btnLogout').style.display = 'inline-block';
+            document.getElementById('adminUsername').textContent = data.username;
+
+            carregarTudo();
+
+        } catch (error) {
+            alertBox.textContent = error.message;
+            alertBox.style.display = 'block';
+        } finally {
+            btnLogin.disabled = false;
+            btnLogin.querySelector('.btn-text').textContent = 'Entrar no Painel Seguro';
+        }
+    });
+}
+
+function fazerLogout() {
+    if (confirm('Deseja realmente sair da área restrita?')) {
+        limparSessao();
+        exibirTelaLogin();
+        document.getElementById('formLoginAdmin').reset();
+    }
+}
 
 function carregarTudo() {
     carregarMetricas();
@@ -13,9 +134,12 @@ function carregarTudo() {
 }
 
 async function carregarMetricas() {
+    const auth = obterAuthHeader();
+    if (!auth) return;
+
     try {
         const response = await fetch('/api/v1/admin/candidatas/metricas', {
-            headers: { 'Authorization': ADMIN_AUTH }
+            headers: { 'Authorization': auth }
         });
         if (response.ok) {
             const data = await response.json();
@@ -30,6 +154,9 @@ async function carregarMetricas() {
 }
 
 async function carregarCandidatas() {
+    const auth = obterAuthHeader();
+    if (!auth) return;
+
     const statusFiltro = document.getElementById('selectStatusFiltro').value;
     const busca = document.getElementById('inputBusca').value.trim();
     const tbody = document.getElementById('tbodyCandidatas');
@@ -42,11 +169,17 @@ async function carregarCandidatas() {
         if (busca) url += `busca=${encodeURIComponent(busca)}`;
 
         const response = await fetch(url, {
-            headers: { 'Authorization': ADMIN_AUTH }
+            headers: { 'Authorization': auth }
         });
 
+        if (response.status === 401 || response.status === 403) {
+            limparSessao();
+            exibirTelaLogin();
+            return;
+        }
+
         if (!response.ok) {
-            tbody.innerHTML = '<tr><td colspan="8" class="loading-td" style="color: var(--danger);">Erro de autenticação ou permissão negada.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" class="loading-td" style="color: var(--danger);">Erro ao carregar lista de candidatas.</td></tr>';
             return;
         }
 
@@ -107,7 +240,6 @@ function renderizarTabela(candidatas) {
 function filtrarStatus(status) {
     document.getElementById('selectStatusFiltro').value = status;
     
-    // Atualiza classe ativa nos cards
     document.querySelectorAll('.kpi-card').forEach(card => {
         if (card.getAttribute('data-filter') === status) {
             card.classList.add('active');
@@ -158,13 +290,19 @@ function fecharModalDossie() {
 async function atualizarStatusCandidata(novoStatus) {
     if (!candidataSelecionadaId) return;
 
+    const auth = obterAuthHeader();
+    if (!auth) {
+        exibirTelaLogin();
+        return;
+    }
+
     const parecer = document.getElementById('parecerTexto').value.trim();
 
     try {
         const response = await fetch(`/api/v1/admin/candidatas/${candidataSelecionadaId}/status`, {
             method: 'PATCH',
             headers: {
-                'Authorization': ADMIN_AUTH,
+                'Authorization': auth,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({

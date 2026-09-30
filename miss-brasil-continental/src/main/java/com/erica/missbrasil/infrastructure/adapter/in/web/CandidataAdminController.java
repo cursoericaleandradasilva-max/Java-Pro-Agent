@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Map;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -37,6 +41,15 @@ public class CandidataAdminController {
         this.consultarUseCase = Objects.requireNonNull(consultarUseCase, "ConsultarCandidatasUseCase é obrigatório");
         this.avaliarUseCase = Objects.requireNonNull(avaliarUseCase, "AvaliarCandidataUseCase é obrigatório");
         this.metricasService = Objects.requireNonNull(metricasService, "ConsultarCandidatasService é obrigatório");
+    }
+
+    @GetMapping("/auth/check")
+    public ResponseEntity<Map<String, Object>> verificarAutenticacao(Authentication authentication) {
+        return ResponseEntity.ok(Map.of(
+            "authenticated", true,
+            "username", authentication.getName(),
+            "roles", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList()
+        ));
     }
 
     @GetMapping

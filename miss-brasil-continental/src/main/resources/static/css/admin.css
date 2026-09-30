@@ -31,6 +31,85 @@
     font-weight: 600;
 }
 
+.btn-logout {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid var(--danger);
+    color: #f87171;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    background: var(--danger);
+    color: #fff;
+}
+
+/* Login Gatekeeper */
+.login-gatekeeper-section {
+    padding: 80px 0;
+    min-height: calc(100vh - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    max-width: 480px;
+}
+
+.login-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-gold);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: var(--shadow-luxury);
+    text-align: center;
+}
+
+.lock-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 10px var(--gold-primary));
+}
+
+.login-header h3 {
+    font-size: 1.5rem;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 25px;
+}
+
+.login-form {
+    text-align: left;
+}
+
+.login-form .form-col {
+    margin-bottom: 18px;
+}
+
+.btn-login {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.login-footer-info {
+    margin-top: 25px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 15px;
+}
+
 .admin-main {
     padding: 40px 20px 80px;
 }
