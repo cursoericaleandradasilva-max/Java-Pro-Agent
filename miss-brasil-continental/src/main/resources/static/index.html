@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miss Brasil Continental - Inscrições Oficiais</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header de Luxo -->
+    <header class="luxury-header">
+        <div class="container header-content">
+            <div class="brand">
+                <span class="crown-icon">👑</span>
+                <div>
+                    <h1>MISS BRASIL</h1>
+                    <span class="sub-brand">CONTINENTAL 2026</span>
+                </div>
+            </div>
+            <nav>
+                <a href="#inscricao" class="btn-nav">Fazer Inscrição</a>
+                <a href="#consultar" class="btn-nav outline">Consultar Protocolo</a>
+                <a href="admin.html" class="btn-nav admin-btn">🔒 Área Restrita</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <span class="hero-badge">CONCURSO NACIONAL OFICIAL</span>
+            <h2 class="hero-title">O Maior Palco da Beleza, Graça e Elegância Nacional</h2>
+            <p class="hero-desc">Inscreva-se na seletiva oficial para representar o Brasil nos maiores concursos internacionais de beleza.</p>
+            <div class="hero-cta">
+                <a href="#inscricao" class="btn-primary">Quero Me Inscrever</a>
+                <a href="#requisitos" class="btn-secondary">Ver Regulamento</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destaques / Requisitos -->
+    <section id="requisitos" class="requisitos-section">
+        <div class="container">
+            <h3 class="section-title">Requisitos para Participação</h3>
+            <div class="grid-cards">
+                <div class="card-feature">
+                    <div class="card-icon">✨</div>
+                    <h4>Idade Oficial</h4>
+                    <p>Candidatas com idade entre 16 e 40 anos completos até a data do concurso.</p>
+                </div>
+                <div class="card-feature">
+                    <div class="card-icon">📍</div>
+                    <h4>Residência no Brasil</h4>
+                    <p>Representantes de todos os estados e do Distrito Federal são bem-vindas.</p>
+                </div>
+                <div class="card-feature">
+                    <div class="card-icon">🔒</div>
+                    <h4>Privacidade & LGPD</h4>
+                    <p>Seus dados e fotos são protegidos em ambiente seguro de triagem restrita.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Formulário de Inscrição Oficial -->
+    <section id="inscricao" class="form-section">
+        <div class="container form-container">
+            <div class="form-header">
+                <span class="badge-gold">ETAPA 1: TRIAGEM INICIAL</span>
+                <h3>Formulário de Inscrição Oficial</h3>
+                <p>Preencha atentamente todos os campos abaixo. Suas fotos serão avaliadas pela comissão julgadora.</p>
+            </div>
+
+            <form id="formInscricao" class="custom-form">
+                <!-- Alertas de Sucesso / Erro -->
+                <div id="formAlert" class="alert-box" style="display: none;"></div>
+
+                <!-- Grupo 1: Dados Pessoais -->
+                <div class="form-group-title">
+                    <h4>1. Dados Pessoais & Contato</h4>
+                </div>
+                <div class="form-row">
+                    <div class="form-col full">
+                        <label for="nomeCompleto">Nome Completo *</label>
+                        <input type="text" id="nomeCompleto" required placeholder="Ex: Isabella Santos Silva">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="email">E-mail Pessoal *</label>
+                        <input type="email" id="email" required placeholder="exemplo@email.com">
+                    </div>
+                    <div class="form-col">
+                        <label for="whatsapp">WhatsApp com DDD *</label>
+                        <input type="tel" id="whatsapp" required placeholder="(11) 99999-8888">
+                    </div>
+                </div>
+
+                <!-- Grupo 2: Medidas Físicas -->
+                <div class="form-group-title">
+                    <h4>2. Medidas & Perfil</h4>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="idade">Idade (anos) *</label>
+                        <input type="number" id="idade" min="16" max="40" required placeholder="Ex: 22">
+                    </div>
+                    <div class="form-col">
+                        <label for="alturaMetros">Altura (em metros) *</label>
+                        <input type="number" id="alturaMetros" step="0.01" min="1.40" max="2.20" required placeholder="Ex: 1.75">
+                    </div>
+                    <div class="form-col">
+                        <label for="pesoKg">Peso (em kg) *</label>
+                        <input type="number" id="pesoKg" step="0.1" min="35.0" max="150.0" required placeholder="Ex: 58.5">
+                    </div>
+                </div>
+
+                <!-- Grupo 3: Endereço -->
+                <div class="form-group-title">
+                    <h4>3. Localização & Endereço</h4>
+                </div>
+                <div class="form-row">
+                    <div class="form-col wide">
+                        <label for="logradouro">Logradouro / Rua *</label>
+                        <input type="text" id="logradouro" required placeholder="Ex: Av. Paulista">
+                    </div>
+                    <div class="form-col narrow">
+                        <label for="numero">Número</label>
+                        <input type="text" id="numero" placeholder="1000">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="bairro">Bairro</label>
+                        <input type="text" id="bairro" placeholder="Bela Vista">
+                    </div>
+                    <div class="form-col">
+                        <label for="cidade">Cidade *</label>
+                        <input type="text" id="cidade" required placeholder="São Paulo">
+                    </div>
+                    <div class="form-col narrow">
+                        <label for="estado">UF (Estado) *</label>
+                        <input type="text" id="estado" maxlength="2" required placeholder="SP" style="text-transform: uppercase;">
+                    </div>
+                    <div class="form-col">
+                        <label for="cep">CEP</label>
+                        <input type="text" id="cep" placeholder="01310-100">
+                    </div>
+                </div>
+
+                <!-- Grupo 4: Upload de Fotos -->
+                <div class="form-group-title">
+                    <h4>4. Fotos para Avaliação (Rosto e Corpo Inteiro) *</h4>
+                </div>
+                <div class="upload-container">
+                    <input type="file" id="fotoInput" accept="image/*" multiple style="display: none;">
+                    <div class="upload-dropzone" onclick="document.getElementById('fotoInput').click()">
+                        <span class="upload-icon">📸</span>
+                        <p>Clique aqui para carregar as fotos da candidata</p>
+                        <span class="upload-hint">Formatos aceitos: JPG, PNG, WEBP (Máx. 3 fotos)</span>
+                    </div>
+                    <div id="previewContainer" class="preview-grid"></div>
+                </div>
+
+                <!-- Termo de Consentimento LGPD -->
+                <div class="privacy-box">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="aceiteLgpd" required>
+                        <span>Declaro que as informações acima são verídicas e autorizo o tratamento dos dados e imagens exclusivamente para avaliação da comissão organizadora do Miss Brasil Continental, nos termos da Lei Geral de Proteção de Dados (LGPD).</span>
+                    </label>
+                </div>
+
+                <div class="form-submit">
+                    <button type="submit" id="btnEnviar" class="btn-submit">
+                        <span class="btn-text">Confirmar e Enviar Inscrição</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Consulta de Protocolo -->
+    <section id="consultar" class="protocol-section">
+        <div class="container">
+            <h3 class="section-title">Já se inscreveu? Consulte o seu Status</h3>
+            <div class="protocol-box">
+                <div class="protocol-input-group">
+                    <input type="text" id="inputProtocolo" placeholder="Digite seu protocolo (Ex: MBC-2026-A1B2C3D4)">
+                    <button id="btnConsultarProtocolo" class="btn-primary">Consultar</button>
+                </div>
+                <div id="resultadoProtocolo" class="resultado-box" style="display: none;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Confirmação de Sucesso -->
+    <div id="modalSucesso" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-icon">🎉</div>
+            <h3 class="modal-title">Inscrição Confirmada!</h3>
+            <p class="modal-subtitle">Parabéns! Sua candidatura foi enviada com sucesso para a comissão julgadora.</p>
+            <div class="protocol-badge-box">
+                <span>SEU NÚMERO DE PROTOCOLO:</span>
+                <strong id="modalProtocolo">MBC-2026-XXXXXXXX</strong>
+            </div>
+            <p class="modal-note">Guarde este número para acompanhar o status de aprovação. Em breve entraremos em contato via WhatsApp/E-mail.</p>
+            <button onclick="document.getElementById('modalSucesso').style.display='none'" class="btn-primary">Concluir</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="luxury-footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <span class="crown-icon">👑</span>
+                <span>Miss Brasil Continental &copy; 2026 - Todos os direitos reservados.</span>
+            </div>
+            <div class="footer-links">
+                <span>Segurança & Privacidade LGPD</span>
+                <span>Organização Oficial</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel da Comissão Julgadora - Miss Brasil Continental</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+    <!-- Header Administrativo -->
+    <header class="admin-header">
+        <div class="container admin-nav-content">
+            <div class="brand">
+                <span class="crown-icon">👑</span>
+                <div>
+                    <h2>PAINEL EXECUTIVO</h2>
+                    <span class="sub-brand">MISS BRASIL CONTINENTAL</span>
+                </div>
+            </div>
+            <div class="admin-user-info">
+                <span id="authStatus" class="auth-pill">🔒 Autenticado: Admin</span>
+                <a href="index.html" class="btn-nav outline">← Voltar ao Portal Público</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Container Principal do Dashboard -->
+    <main class="container admin-main">
+        <!-- Métricas e Contadores (KPIs) -->
+        <section class="kpi-grid">
+            <div class="kpi-card" data-filter="" onclick="filtrarStatus('')">
+                <span class="kpi-title">TOTAL DE INSCRITAS</span>
+                <h3 id="kpiTotal" class="kpi-value">0</h3>
+                <span class="kpi-subtitle">Todas as candidatas</span>
+            </div>
+            <div class="kpi-card em-analise" data-filter="EM_ANALISE" onclick="filtrarStatus('EM_ANALISE')">
+                <span class="kpi-title">EM ANÁLISE</span>
+                <h3 id="kpiEmAnalise" class="kpi-value">0</h3>
+                <span class="kpi-subtitle">Aguardando decisão</span>
+            </div>
+            <div class="kpi-card aprovadas" data-filter="APROVADA" onclick="filtrarStatus('APROVADA')">
+                <span class="kpi-title">APROVADAS</span>
+                <h3 id="kpiAprovadas" class="kpi-value">0</h3>
+                <span class="kpi-subtitle">Seletiva concluída</span>
+            </div>
+            <div class="kpi-card reprovadas" data-filter="REPROVADA" onclick="filtrarStatus('REPROVADA')">
+                <span class="kpi-title">REPROVADAS</span>
+                <h3 id="kpiReprovadas" class="kpi-value">0</h3>
+                <span class="kpi-subtitle">Não selecionadas</span>
+            </div>
+        </section>
+
+        <!-- Barra de Filtros e Busca -->
+        <section class="filter-bar">
+            <div class="search-input-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="inputBusca" placeholder="Pesquisar por nome, estado, cidade ou protocolo..." oninput="carregarCandidatas()">
+            </div>
+            <div class="status-select-box">
+                <select id="selectStatusFiltro" onchange="carregarCandidatas()">
+                    <option value="">Todos os Status</option>
+                    <option value="EM_ANALISE">Em Análise</option>
+                    <option value="APROVADA">Aprovadas</option>
+                    <option value="REPROVADA">Reprovadas</option>
+                </select>
+            </div>
+            <button class="btn-primary btn-refresh" onclick="carregarTudo()">🔄 Atualizar</button>
+        </section>
+
+        <!-- Tabela de Candidatas -->
+        <section class="table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>Protocolo</th>
+                        <th>Candidata</th>
+                        <th>Contato</th>
+                        <th>Localização</th>
+                        <th>Medidas</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyCandidatas">
+                    <tr>
+                        <td colspan="8" class="loading-td">Carregando inscrições do banco seguro...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Modal Dossiê Completo da Candidata -->
+    <div id="modalDossie" class="modal-overlay" style="display: none;">
+        <div class="modal-card modal-dossie">
+            <div class="dossie-header">
+                <div>
+                    <h3 id="dossieNome">Nome da Candidata</h3>
+                    <span id="dossieProtocolo" class="dossie-protocolo">MBC-2026-XXXXX</span>
+                </div>
+                <button class="btn-close" onclick="fecharModalDossie()">✖</button>
+            </div>
+
+            <div class="dossie-body">
+                <!-- Galeria de Fotos -->
+                <div class="dossie-gallery" id="dossieGaleria"></div>
+
+                <!-- Ficha Técnica -->
+                <div class="dossie-info-grid">
+                    <div class="info-group">
+                        <label>E-mail:</label>
+                        <span id="dossieEmail">-</span>
+                    </div>
+                    <div class="info-group">
+                        <label>WhatsApp:</label>
+                        <span id="dossieWhatsapp">-</span>
+                    </div>
+                    <div class="info-group">
+                        <label>Idade:</label>
+                        <span id="dossieIdade">-</span>
+                    </div>
+                    <div class="info-group">
+                        <label>Altura & Peso:</label>
+                        <span id="dossieMedidas">-</span>
+                    </div>
+                    <div class="info-group full">
+                        <label>Endereço Completo:</label>
+                        <span id="dossieEndereco">-</span>
+                    </div>
+                    <div class="info-group full">
+                        <label>Data de Inscrição:</label>
+                        <span id="dossieData">-</span>
+                    </div>
+                </div>
+
+                <!-- Seção de Decisão da Comissão -->
+                <div class="dossie-decision-box">
+                    <h4>Parecer da Comissão de Jurados:</h4>
+                    <textarea id="parecerTexto" placeholder="Insira aqui as observações ou parecer técnico da candidata..."></textarea>
+                    
+                    <div class="decision-buttons">
+                        <button class="btn-action btn-approve" onclick="atualizarStatusCandidata('APROVADA')">✅ Aprovar Candidata</button>
+                        <button class="btn-action btn-reject" onclick="atualizarStatusCandidata('REPROVADA')">❌ Reprovar Candidata</button>
+                        <button class="btn-action btn-pending" onclick="atualizarStatusCandidata('EM_ANALISE')">⏳ Manter em Análise</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
